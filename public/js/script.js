@@ -159,6 +159,7 @@ $(document).ready(function(){
 		var fileForm = document.forms.namedItem("fileInfo");
 	
 		fileForm.addEventListener('submit', function(ev) {
+			
 		    var documentUpload = document.querySelector(".files"),
 		    	nasSid = $('.upload-form').data('sid'),
 		    	nasIp = $('.upload-form').data('server'),
