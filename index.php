@@ -27,15 +27,11 @@ require(__DIR__.'/app/src/to_page.php');
 	    <div class="alert" role="alert">
 		</div>
 	    
-	    <div class="authenticate form" >
+	    <div class="authenticate js-enter-press" >
 		    <form >
-			    <label for="login">Login</label>
-				<input type="text" placeholder="type your login" class="js-auth-login" id="login" required="" autocomplete="off"/> 
+			    <label for="login">Login</label> <input type="text" placeholder="type your login" class="js-auth-login" id="login" required="" autocomplete="off"/> 
 			    <br>
-			    <br>
-		    	<label for="password">Password</label>
-				<input type="password" placeholder="type your password" class="js-auth-pass" id="password" required="" autocomplete="off"/>
-			    <br>
+		    	<label for="password">Password</label> <input type="password" placeholder="type your password" class="js-auth-pass" id="password" required="" autocomplete="off"/>
 			    <br>
 				<input type="button" id="submit" class="auth-submit js-auth js-submit" value="Submit"/>
 			</form>

@@ -23,7 +23,10 @@ if ( isset($_POST['login']) ){
 			$_SESSION["groupname"] = $groupname;
 			
 			
-			$text_send = '{"authPassed": true }';
+			$text_send = '{
+							"authPassed": true ,
+							"authSid": "'.$authSid.'"
+						  }';
 			
 		} else {
 			$text_send = '{"authPassed": false }';

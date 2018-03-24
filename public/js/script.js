@@ -1,7 +1,9 @@
 $(document).ready(function(){
 	
+	var path = $('.js-path').val(); //take path value
+	
 	//on input form "Enter" button pressed equel to "js-submit" button pressed
-	$(".form input").keypress(function (e) {
+	$(".js-enter-press input").keypress(function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('.js-submit').click();
             return false;
@@ -41,6 +43,7 @@ $(document).ready(function(){
 				    var jsonData = JSON.parse(data);
 				    
 				    if (jsonData.authPassed){ 
+					    document.cookie = "nasSid = "+jsonData.authSid;
 					   	window.open('./public/page.php',"_self") 
 					 } else {
 					    
@@ -55,10 +58,11 @@ $(document).ready(function(){
 	
 	
 	//Click on button to LIST file and SET LIMIT
-	$('.js-path-limit').click(function(){
+	$('.js-submit').click(function(){
 			
-		var path= $('.js-path').val();
-		var limit= $('.js-limit').val();
+			path= $('.js-path').val();
+			
+		var	limit= $('.js-limit').val();
 			
 		$.post("../app/src/list_files.php",
 		    {
@@ -68,7 +72,7 @@ $(document).ready(function(){
 		    function(data, status){
 
 		        var jsonData = JSON.parse(data),
-		        	jsonDataLeng = jsonData.datas.length;
+		        	jsonDataLeng = jsonData.datas.length; //take from QNAP API 'datas' array file list 
 		        
 		        if (!jsonData.sessionEnd){
 			        
@@ -82,7 +86,7 @@ $(document).ready(function(){
 					    
 					    fileString +='<li class="file-item list-group-item js-file-item" >';
 					    
-					    if (file.isfolder){fileString += '<img class="ico-folder" src="img/folder_ico.png" height=15px/>'};
+					    if (file.isfolder){fileString += '<img class="ico-folder" src="img/folder_ico.png" height=15px/>'}; //check if file item is folder
 					    fileString += file.filename;
 					    
 					    fileString += '</li>';
@@ -100,18 +104,49 @@ $(document).ready(function(){
 	});
 	
 	
-	//Click on dynamic js-file-item 
-	if ($('.js-files-zone').length){
+	//Click back button - for return to previous folder 
+	$('.js-back').on('click', function(){
+		
+			path = $('.js-path').val(); //take value from path input field
+		var slash = path.lastIndexOf("/"); //find last slash symbol
+		
+		
+		if(path.length>1 && slash===0){ //if path is '/' only 
+			
+			var result = path.slice(0,1); //slice string 
+			
+			$('.js-path').val(result);
+			
+			
+			
+		} else if(path.length>1 && slash!=0){
+			
+			var result = path.slice(0,slash); //slice string 
+			
+			$('.js-path').val(result);
+			
+		};
+		
 		
 		$('.js-submit').click();
+
 		
-		var path = $('.js-path').val();
+	});
+	
+	
+	//Click on file item ( .js-file-item )
+	if ($('.js-files-zone').length){
 		
+		console.log(document.cookie);
+		
+		$('.js-submit').click(); //show file list on load Files Zone
+		
+		path = $('.js-path').val(); //take value from path input field
+
+				
 		$('.js-files-zone')
 		.on('click','.js-file-item',function(){
-			
-			console.log(path);
-			
+						
 			//highlight file item in file zone
 			$('.js-file-item').removeClass('file-item-active');
 			$(this).addClass('file-item-active');
@@ -131,26 +166,10 @@ $(document).ready(function(){
 			$('.js-path').val(path);
 			
 			$('.js-submit').click();
-			//$('.js-path').val( path + '/'+ $(this).text() );
 		});
 	}
 	
-	
-	
-	//TEST TEST TEST
-	$('.js-test').click(function(){
-		
-		$.post("http://files.komek.me:81/test.php",
-		    {
-		        yes: 'yes'
-		    },
-		    function(data, status){
-		        //var jsonData = JSON.parse(data);
-			    $('.files').empty();
-				$('.files').append(data);	
-		    }
-		);
-	});
+
 	
 	
 	//Upload a file to NAS.
