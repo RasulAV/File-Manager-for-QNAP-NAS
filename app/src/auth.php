@@ -25,12 +25,13 @@ if ( isset($_POST['login']) ){
 			
 			$text_send = '{
 							"authPassed": true ,
-							"authSid": "'.$authSid.'"
-						  }';
+							"authSid": "'.$authSid.'",
+							"serverName": "'.$server_name2.'"
+							}'; //serverName variable for javascipt - upload to NAS
 			
 		} else {
 			$text_send = '{"authPassed": false }';
 		};
 	
-	echo $text_send ;
+	echo $text_send;
 }

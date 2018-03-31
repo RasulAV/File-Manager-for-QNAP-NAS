@@ -1,6 +1,5 @@
 <div class="container main-content">
 	    
-	    
 	<div class="path-and-limit js-enter-press" > 
 	   <label for="path"> Path </label> <input type="text" class="js-path" id="path" value="/"/> <br>
 	   <label for="limit"> Limit </label> <input type="text" class="js-limit" id="limit" value="50" />  <br>
@@ -21,7 +20,7 @@
     <br>
     
     
-    <form style="border: 1px dashed rgba(0, 0, 0, 0.58); padding: 30px" class="upload-form" enctype="multipart/form-data" method="post" name="fileInfo" >
+    <form style="border: 1px dashed rgba(0, 0, 0, 0.58); padding: 30px" class="js-upload-form" enctype="multipart/form-data" method="post" name="fileUpload" >
 	    
 	  <input type="file" name="file" required="">
 	  <input type="submit" value="Upload the file!" class="js-upload">
