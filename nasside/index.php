@@ -8,9 +8,10 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
 	$sid= $_POST['sid'];
 	$ip= $_POST['ip'];
 	$path= $_POST['path'];
+	$user= $_POST['user'];
 	
 	
-	$target_dir = "admin".$path."/";
+	$target_dir = $user.$path."/";
 	$target_file = $target_dir . basename($_FILES["file"]["name"]);
 	
 	
@@ -25,4 +26,6 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
 
 	
 	echo($text_send);
+	
+	//echo($target_dir);
 }

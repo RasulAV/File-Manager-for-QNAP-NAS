@@ -8,6 +8,10 @@
 	   <br>
 	   <br>
 	   <button class="js-back" > <-Back </button>
+	   
+	   <br>
+	   <br>
+	   <button class="js-create-dir" > Create folder </button>
 
 	</div>
     

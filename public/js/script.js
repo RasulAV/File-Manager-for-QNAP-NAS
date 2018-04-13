@@ -23,7 +23,7 @@ $(document).ready(function(){
 	
 	var path = $('.js-path').val(); //take path value
 	
-	//if ENTER pressed on form 						 ****************************** *JS-ENTER-PRESS* keypress ***************************
+	//if ENTER pressed on form 					 ****************************** *JS-ENTER-PRESS* keypress ***************************
 	$(".js-enter-press input").keypress(function (e) {
         if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
             $('.js-submit').click();
@@ -67,6 +67,7 @@ $(document).ready(function(){
 					    			    
 					    setCookie("nasSid", jsonData.authSid); //set NAS session id (SID) cookie
 					    setCookie("serverName", jsonData.serverName); // set NAS ip adress cookie
+					    setCookie("userName", jsonData.userName); // set user name cookie
 					    
 					   	window.open('./public/page.php',"_self") 
 					 } else {
@@ -158,10 +159,46 @@ $(document).ready(function(){
 	});
 	
 	
+	//Click back button - for return to previous folder  ****************************** *JS-Create-DIR* click ******************************
+	$('.js-create-dir').on('click', function(){
+		
+		path = $('.js-path').val(); //take value from path input field
+		
+		$.post("../app/src/create_dir.php",
+			    {
+			        path: path,
+			        dirName: 'test'
+			    },
+			    function(data){
+				    
+					var jsonData = JSON.parse(data);
+		        
+					if (!jsonData.sessionEnd){ 
+						
+						switch (jsonData.status) {
+						    case "ready":
+						        $('.js-submit').click();
+						        break;
+						    case "exist":
+						        alert('Folder Already Exist!'); 
+						        break;
+						    case "denied":
+						    	alert('Access Denied');
+						       
+						}
+						
+					} 
+					else { 
+							alert('Session is ended, please re login'); 
+					}
+			    }
+		    )
+	});
+	
+	
 	//Click on file item ( .js-file-item )	****************************** *JS-FILES-ZONE* length- if exist******************************
 	if ($('.js-files-zone').length){
 		
-		console.log(document.cookie);
 		
 		$('.js-submit').click(); //show file list on load Files Zone
 		
@@ -194,7 +231,7 @@ $(document).ready(function(){
 	}
 	
 	
-	//Upload a file to NAS.				***************************** *JS-UPLOAD-FORM* length- if exist ******************************
+	//UPLOAD file to NAS.				***************************** *JS-UPLOAD-FORM* length- if exist ******************************
 	if ($('.js-upload-form').length) {
 		
 		var fileForm = document.forms.namedItem("fileUpload");
@@ -203,12 +240,16 @@ $(document).ready(function(){
 			
 		    var nasSid = getCookie('nasSid'),
 		    	nasIp = getCookie('serverName'),
+		    	userName = getCookie('userName'),
 		    	dstPath = $('.js-path').val(),
 				
 				form_data = new FormData(fileForm);
 				
+				
+				//append data to form
 				form_data.append('sid', nasSid);
 				form_data.append('ip', nasIp);
+				form_data.append('user', userName);
 				form_data.append('path', dstPath);
 		    	
 		    	
@@ -243,4 +284,7 @@ $(document).ready(function(){
 		    ev.preventDefault();
 		}, false);
 	}
+	
+	
+	console.log(getCookie('nasSid') + " " + getCookie('userName'));
 })

@@ -1,6 +1,6 @@
 <?php
 	
-require_once('server_name.php');	
+require_once('settings.php');	
 	
 require(__DIR__.'/session_check.php');
 
@@ -9,8 +9,10 @@ if ( isset($_POST['login']) ){
 		
 	$login = $_POST['login'];
 	$pass = $_POST['pass'];
+	$mainservername = $nasserver['servername']['main'];
+	$rootdir = $nasserver['servername']['rootdir'];
 	
-	$xml=simplexml_load_file( $server_name.'/cgi-bin/authLogin.cgi?user='.$login.'&pwd='.$pass) or die("Error to open file");
+	$xml=simplexml_load_file( $mainservername.'/cgi-bin/authLogin.cgi?user='.$login.'&pwd='.$pass) or die("Error to open file");
 	
 	if ($xml->authPassed==1) {
 		
@@ -18,16 +20,22 @@ if ( isset($_POST['login']) ){
 			$username = $xml->username->__toString();//conver simplexml object to string
 			$groupname = $xml->groupname->__toString();//conver simplexml object to string
 						
+						
+			//initialize SESSION values			
 			$_SESSION["authSid"] = $authSid;
 			$_SESSION["username"] = $username;
 			$_SESSION["groupname"] = $groupname;
+			$_SESSION["mainservername"] = $mainservername;
+			$_SESSION["rootdir"] = $rootdir;
+			
 			
 			
 			$text_send = '{
 							"authPassed": true ,
 							"authSid": "'.$authSid.'",
-							"serverName": "'.$server_name2.'"
-							}'; //serverName variable for javascipt - upload to NAS
+							"userName": "'.$username.'",
+							"serverName": "'.$nasserver['servername']['upload'].'"
+							}'; // variable for javascipt cookies - upload to NAS
 			
 		} else {
 			$text_send = '{"authPassed": false }';
