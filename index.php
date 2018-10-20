@@ -38,8 +38,7 @@ require(__DIR__.'/app/src/to_page.php');
 		</div>
 	    
     </div>
-
-
+	  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
